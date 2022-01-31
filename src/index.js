@@ -11,9 +11,10 @@ const url = process.env.INFLUX_URL
 const token = process.env.INFLUX_TOKEN
 const org = process.env.INFLUX_ORG
 const bucket = process.env.INFLUX_BUCKET
-const mocksensors = true
-const mockinflux = false
-const debugmode = false
+const mocksensors = process.env.MOCK_SENSORS
+const mockinflux = process.env.MOCK_INFLUX
+const debugmode = process.env.DEBUGMODE
+
 const HWSENSORPREFIX='/sys/bus/w1/devices/';
 
 const influxDB = new InfluxDB({ url, token })
