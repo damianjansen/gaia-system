@@ -1,6 +1,6 @@
 
 import { setup, setMode, write, MODE_BCM, DIR_OUT } from 'rpi-gpio'
-//import { readFileSync, writeFileSync } from 'fs'
+import { writeToLog } from '../lib/recorder'
 
 const relay1 = 21
 const relay2 = 16
@@ -23,7 +23,7 @@ setup(relay4, DIR_OUT)
  */
 const allow = async (relay: number) => {
   write(relay, relayOn, (err) => {
-    console.log(err ? `FAILED TO WRITE ON ${relay}` : `WRITE ON ${relay}`)
+    writeToLog(err ? `[ERROR]: FAILED TO WRITE ON RELAY ${relay}` : `[INFO]: WRITE ON RELAY ${relay}`)
   })
 }
 
@@ -33,7 +33,7 @@ const allow = async (relay: number) => {
  */
 const deny = async (relay: number) => {
   write(relay, relayOff, (err) => {
-    console.log(err ? `FAILED TO WRITE OFF ${relay}` : `WRITE OFF ${relay}`)
+    writeToLog(err ? `[ERROR]: FAILED TO WRITE OFF RELAY ${relay}` : `[INFO]: WRITE OFF RELAY ${relay}`)
   })
 }
 

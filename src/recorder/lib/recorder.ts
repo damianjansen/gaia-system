@@ -46,7 +46,7 @@ const writeToInflux = async (sensors: Array<SensorData>) => {
     }
     if (!mockinflux) {
         writeApi.writePoints(points)
-        writeApi.flush().then(() => { console.log('Wrote to server') }).catch((reason) => { console.log(`Error saving data to InfluxDB! ${reason}`)})
+        writeApi.flush().then(() => { writeToLog('[INFO]: Wrote to server') }).catch((reason) => { writeToLog(`[ERROR]: Error saving data to InfluxDB! ${reason}`)})
     }
 }
 

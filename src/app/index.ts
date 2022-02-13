@@ -2,7 +2,7 @@
 import 'dotenv/config'
 import { readSensors } from '../sensors/lib/sensors'
 import { setRelayState, toggleFan } from '../relay/lib/relay'
-import { writeToInflux } from '../recorder/lib/recorder'
+import { writeToInflux, writeToLog } from '../recorder/lib/recorder'
 import { SensorData } from '../sensors/types/types'
 
 const debugmode = process.env.DEBUGMODE
@@ -14,9 +14,9 @@ const gaiaLoop = async() => {
     const sensorData: SensorData[] = await readSensors()
     setAction(sensorData)
     await writeToInflux(sensorData).then(() => {
-        console.log("Wrote to influx")
+        writeToLog("[INFO]: Wrote to influx")
     }).catch((reason) => {
-        console.log(`Write to error log ${reason}`)
+        writeToLog(`[ERROR]: ${reason}`)
     })
 }
 
