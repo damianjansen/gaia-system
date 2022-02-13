@@ -2,6 +2,7 @@ import { read, SensorType } from 'node-dht-sensor';
 import { readFileSync, opendir, existsSync } from 'fs'
 import 'dotenv/config'
 import { SensorData, SensorReading } from '../types/types'
+import { writeToLog } from '../../recorder/lib/recorder'
 
 /** Environment variables **/
 const mocksensors = process.env.MOCK_SENSORS
@@ -47,7 +48,7 @@ const sensorArray = [
 /**
  * Return temperature reading from a given 1-Wire sensor
  * 1-Wire sensors require the uuid of the sensor device
- * 
+ *
  * @param sensor uuid of the sensor
  * @returns a SensorReading of data from the device
  */
@@ -59,20 +60,20 @@ const ds18b20Temp = async (sensor: string): Promise<SensorReading> => {
       ret.error = Error(`Failed to open dir ${err}`)
       return
     }
-    
+
     for await (const dirent of dir) {
       if (existsSync(`${hwmonDir}/${dirent.name}/temp1_input`)) {
         ret.temperature = (parseFloat(readFileSync(`${hwmonDir}/${dirent.name}/temp1_input`, 'utf-8'))/1000.0).toString();
       }
     }
     ret.error = Error(`Unable to locate sensor by uuid ${sensor}`)
-  })  
+  })
   return ret
 }
 
 /**
  * Read a DHT11 or 22 temperature and humidity sensor
- * 
+ *
  * @param type either 11 or 22
  * @param sensor sensor location, e.g. pin 21
  * @returns a SensorReading of data from the device
@@ -95,12 +96,12 @@ const dhtxxTemp = async (type: number, sensor: string): Promise<SensorReading> =
  * Read the available sensors and return the data in an array.
  * The DHT11 and 22 sensors will return a humidity, whereas DS18B20 will
  * only provide a temperature (thus defaulting to 100)
- * 
+ *
  * @returns array of sensor data
  */
 const readSensors = async (): Promise<Array<SensorData>> => {
   const now = Date.now().valueOf()
-  let sensorData: SensorData[] = []  
+  let sensorData: SensorData[] = []
   if (mocksensors) {
         // Pretend to read from all sensors
     (await getMockData()).forEach(async (d) => {
@@ -116,9 +117,11 @@ const readSensors = async (): Promise<Array<SensorData>> => {
         } else {
           throw Error(`Unknown sensor type ${sensorRead.type}`)
         }
-      
+
         if (!response.error) {
           sensorData.push({ name: sensorRead.name, location: sensorRead.location, type: sensorRead.type, temperature: response.temperature, humidity: response.humidity, timestamp: now })
+        } else {
+          writeToLog(`[ERROR]: Failed to read from sensor: ${response.error.message}`)
         }
     })
   }
