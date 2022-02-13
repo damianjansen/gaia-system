@@ -33,6 +33,10 @@ const setAction = (data: SensorData[]) => {
     const loop = data.find(d => d.name === 'Radiator')
     const ambient = data.find(d => d.name === 'Ambient')
 
+    if(!cauldron || !loop || !ambient) {
+        writeToLog(`[ERROR]: Failed to locate temperature: ${data}`)
+        return
+    } 
     
     const coolerTemp = parseInt(cauldron.temperature)
     if (coolerTemp < 5) {

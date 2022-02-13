@@ -1,6 +1,6 @@
 
 import { setup, setMode, write, MODE_BCM, DIR_OUT } from 'rpi-gpio'
-import { writeToLog } from '../lib/recorder'
+import { writeToLog } from '../../recorder/lib/recorder'
 
 const relay1 = 21
 const relay2 = 16
@@ -74,7 +74,7 @@ const setRelayState = async (state: string) => {
       writeToLog('[INFO]: Set relay state OFF')
       break
     }
-    
+
     default: {
       throw Error('INVALID STATE FOR RELAY')
     }
