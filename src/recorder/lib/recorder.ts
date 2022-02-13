@@ -21,7 +21,7 @@ const writeApi = influxDB.getWriteApi(org, bucket, 's')
  */
 const writeToInflux = async (sensors: Array<SensorData>) => {
     if (sensors.length == 0) {
-        writeToLog(`Sensor data is empty`)
+        writeToLog(`[WARN]: Sensor data is empty`)
         return
     }
     let points: Point[] = []
@@ -46,7 +46,7 @@ const writeToInflux = async (sensors: Array<SensorData>) => {
     }
     if (!mockinflux) {
         writeApi.writePoints(points)
-        writeApi.flush().then(() => { writeToLog('[INFO]: Wrote to server') }).catch((reason) => { writeToLog(`[ERROR]: Error saving data to InfluxDB! ${reason}`)})
+        writeApi.flush().then(() => { writeToLog(`[INFO]: Wrote to InfluxDB ${points.length} points`) }).catch((reason) => { writeToLog(`[ERROR]: Error saving data to InfluxDB! ${reason}`)})
     }
 }
 
@@ -63,7 +63,7 @@ const writeToLog = async (message: string) => {
  */
 process.on('SIGINT', function() {
     writeApi.close().then(() => {
-        console.log('WRITER CLOSED')
+        writeToLog('[INFO]: WRITER CLOSED')
     process.exit();
   })
 })

@@ -50,28 +50,28 @@ const setRelayState = async (state: string) => {
       await allow(relay1)
       await allow(relay2)
       await allow(relay3)
-      console.log('Set relay state HIGH')
+      writeToLog('[INFO]: Set relay state HIGH')
       break
     }
     case('MID'): {
       await allow(relay1)
       await allow(relay2)
       await deny(relay3)
-      console.log('Set relay state MID')
+      writeToLog('[INFO]: Set relay state MID')
       break
     }
     case('LOW'): {
       await allow(relay1)
       await deny(relay2)
       await deny(relay3)
-      console.log('Set relay state LOW')
+      writeToLog('[INFO]: Set relay state LOW')
       break
     }
     case('OFF'): {
       await deny(relay1)
       await deny(relay2)
       await deny(relay3)
-      console.log('Set relay state OFF')
+      writeToLog('[INFO]: Set relay state OFF')
       break
     }
     
