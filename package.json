@@ -2,28 +2,33 @@
   "name": "gaia-system",
   "version": "1.0.0",
   "description": "Monitoring of the Gaia PC",
-  "main": "build/src/index.js",
+  "main": "src/app/index.ts",
   "license": "UNLICENSED",
   "private": true,
-  "type": "module",
+  "types": "src/types",
   "scripts": {
-    "test": "echo \"Nothing here yet\" && exit 0",
-    "build": "yarn install",
-    "start": "node src/index.js"
+    "test": "jest",
+    "build": "yarn && yarn install",
+    "start": "ts-node src/app/index.ts"
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.15.0",
+    "@types/jest": "^27.4.0",
     "dot-env": "^0.0.1",
     "dotenv": "^15.0.0",
     "ds18b20-raspi": "^0.3.6",
+    "esm": "^3.2.25",
     "express": "^4.17.2",
-    "node-dht-sensor": "^0.4.3"
+    "node-dht-sensor": "^0.4.3",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.16.7",
     "@types/lodash.isequal": "",
     "@types/lodash.uniqwith": "^4.5.6",
     "rimraf": "^3.0.2",
     "ts-standard": "^11.0.0",
-    "typescript": "^4.5.5"
+    "jest": "^27.5.1"
   }
 }
