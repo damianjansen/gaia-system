@@ -9,7 +9,7 @@
     "composite": true,
     "strict": true,
     "noImplicitAny": false,
-    "moduleResolution": "node",
+    "moduleResolution": "node12",
     "typeRoots": ["types"],
     "types": ["node"],
     "esModuleInterop": true,
