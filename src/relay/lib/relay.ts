@@ -2,26 +2,38 @@
 import { setup, setMode, write, MODE_BCM, DIR_OUT } from 'rpi-gpio'
 import { writeToLog } from '../../recorder/lib/recorder'
 
-const relay1 = 21
+const relay1 = 12
 const relay2 = 16
-const relay3 = 26
-const relay4 = 17
+const relay3 = 20
+const relay4 = 21
+/**
+ * Testmode provides a method to run the system without causing 
+ * damage to the local environment. It will prevent GPIO and file
+ * writing for devices.
+ * It should be off for 'yarn test'
+ */
+const testmode = process.env.TESTMODE === 'true'
 
 const states = ['HIGH', 'MID', 'LOW', 'OFF']
 const relayOn = false
 const relayOff = true
 
-setMode(MODE_BCM)
-setup(relay1, DIR_OUT)
-setup(relay2, DIR_OUT)
-setup(relay3, DIR_OUT)
-setup(relay4, DIR_OUT)
-
+if (!testmode) {
+  setMode(MODE_BCM)
+  setup(relay1, DIR_OUT)
+  setup(relay2, DIR_OUT)
+  setup(relay3, DIR_OUT)
+  setup(relay4, DIR_OUT)
+}
 /**
  * Allow power through the relay
  * @param relay pin number of the relay
  */
 const allow = async (relay: number) => {
+  if (testmode) {
+    console.log(`[INFO]: WRITE ON RELAY ${relay}`)
+    return
+  }
   write(relay, relayOn, (err) => {
     writeToLog(err ? `[ERROR]: FAILED TO WRITE ON RELAY ${relay}` : `[INFO]: WRITE ON RELAY ${relay}`)
   })
@@ -32,6 +44,10 @@ const allow = async (relay: number) => {
  * @param relay pin number of the relay
  */
 const deny = async (relay: number) => {
+  if (testmode) {
+    console.log(`[INFO]: WRITE OFF RELAY ${relay}`)
+    return
+  }
   write(relay, relayOff, (err) => {
     writeToLog(err ? `[ERROR]: FAILED TO WRITE OFF RELAY ${relay}` : `[INFO]: WRITE OFF RELAY ${relay}`)
   })

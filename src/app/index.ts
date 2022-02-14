@@ -29,16 +29,25 @@ const gaiaLoop = async() => {
  * @param data sensor data array
  */
 const setAction = (data: SensorData[]) => {
+    const maxAcceptableHumidityChamber = 90
+    const maxAcceptableHumidityInternal = 50
     const cauldron = data.find(d => d.name === 'Cauldron')
-    const loop = data.find(d => d.name === 'Radiator')
+    const radiator = data.find(d => d.name === 'Radiator')
     const ambient = data.find(d => d.name === 'Ambient')
+    const chamber = data.find(d => d.name === 'Chamber')
+    const machine = data.find(d => d.name === 'Internal')
 
-    if(!cauldron || !loop || !ambient) {
-        writeToLog(`[ERROR]: Failed to locate temperature: ${data}`)
+    //console.log(JSON.stringify(data))
+
+    if(!cauldron || !radiator || !ambient) {
+        writeToLog(`[ERROR]: Failed to locate temperature: ${JSON.stringify(data)}`)
         return
     } 
     
     const coolerTemp = parseInt(cauldron.temperature)
+    if (isNaN(parseInt(ambient.temperature)) || isNaN(parseInt(radiator.temperature)) || isNaN(coolerTemp)) {
+        writeToLog(`[ERROR]: Failed to read temperature: ${JSON.stringify(data)}`)
+    }
     if (coolerTemp < 5) {
         setRelayState('OFF')
     } else if (coolerTemp < 10) {
@@ -49,7 +58,17 @@ const setAction = (data: SensorData[]) => {
         setRelayState('HIGH')
     }
 
-    toggleFan(ambient < loop)
+    toggleFan(parseInt(ambient.temperature) < parseInt(radiator.temperature))
+    if(!machine || !chamber) {
+        writeToLog(`[ERROR]: Failed to locate humidity: ${JSON.stringify(data)}`)
+        return
+    }
+    if (parseInt(machine.humidity) > maxAcceptableHumidityInternal) {
+        //alert
+    }
+    if (parseInt(chamber.humidity) > maxAcceptableHumidityChamber) {
+        //alert
+    }
 }
 
 // Enable Gaia

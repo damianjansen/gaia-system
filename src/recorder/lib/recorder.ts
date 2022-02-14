@@ -9,8 +9,8 @@ const url = process.env.INFLUX_URL??''
 const token = process.env.INFLUX_TOKEN??''
 const org = process.env.INFLUX_ORG??''
 const bucket = process.env.INFLUX_BUCKET??''
-const mockinflux = process.env.MOCK_INFLUX
-const debugmode = process.env.DEBUGMODE
+const mockinflux = process.env.MOCK_INFLUX == 'true'
+const debugmode = process.env.DEBUGMODE == 'true'
 
 const influxDB = new InfluxDB({ url, token })
 const writeApi = influxDB.getWriteApi(org, bucket, 's')
@@ -55,7 +55,7 @@ const writeToInflux = async (sensors: Array<SensorData>) => {
  * @param message message to be written
  */
 const writeToLog = async (message: string) => {
-    writeFile('/tmp/gaia.log', `${message}\r\n`, { encoding: 'utf-8', flag: 'a+' }, (err) => { if (err) console.log(err) })
+    writeFile('/tmp/gaia.log', `[${Date.now()}]${message}\r\n`, { encoding: 'utf-8', flag: 'a+' }, (err) => { if (err) console.log(err) })
 }
 
 /**
