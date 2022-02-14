@@ -1,0 +1,31 @@
+{
+  "name": "gaia-alert",
+  "version": "1.0.0",
+  "description": "System alerting for Gaia PC",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "build": "yarn install"
+  },
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/node-fetch": "^3.0.3",
+    "axios": "^0.26.0",
+    "dot-env": "^0.0.1",
+    "dotenv": "^15.0.0",
+    "node-fetch": "^3.0.3",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.6.0-dev.20220211"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.2",
+    "@babel/preset-env": "^7.16.11",
+    "@types/lodash.isequal": "",
+    "@types/lodash.uniqwith": "^4.5.6",
+    "babel-jest": "^27.5.1",
+    "jest": "^27.5.1",
+    "rimraf": "^3.0.2",
+    "ts-standard": "^11.0.0"
+  }
+}

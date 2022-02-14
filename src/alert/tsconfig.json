@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+    "types": ["node"]
+  },
+  "extends": "../../tsconfig.base.json",
+  "files": [
+    "./lib/alert.ts"
+  ],
+  "references": [
+    {
+      "path": "../recorder"
+    }
+  ]
+}
