@@ -1,12 +1,11 @@
-# gaia-system
+# Gaia
 Personal project for tracking temps in a PC and pushing to Influxdb.<br>
-Reads per second data and pushes immediately.
+Reads 5 second data and pushes immediately, and triggers relay updates based on conditions.<br>
 
 ```
-cp example.env .env # Update with target bucket
+cp example.env .env # Update with target bucket details and IFTTT key/event
 yarn
 yarn install
 yarn start
 ```
 
-In the future I might make is a modular .ts project...
